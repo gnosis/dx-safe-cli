@@ -27,6 +27,9 @@
   "homepage": "https://github.com/gnosis/dx-modules-cli#readme",
   "dependencies": {
     "debug-logger": "^0.4.1",
+    "gnosis-safe": "git+https://github.com/gnosis/safe-contracts.git#temporal/v0.1.0-build",
+    "gnosis-safe-modules": "git+https://github.com/gnosis/safe-modules.git#feature/dx-module-refactor",
+    "truffle": "^4.1.15",
     "yargs": "^13.2.1"
   }
 }
