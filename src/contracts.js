@@ -18,12 +18,21 @@ async function loadContracts(conf){
         'DutchXSellerModule'
     ].map((name) => require(`gnosis-safe-modules/build/contracts/${name}.json`))
 
+    const dxArtifacts = [
+        'DutchExchange',
+        'DutchExchangeProxy'
+    ].map((name) => require(`@gnosis.pm/dx-contracts/build/contracts/${name}.json`))
+
     const miscArtifacts = [
-        'Token'
+        'Token',
+        'HumanFriendlyToken'
     ].map((name) => require(`@gnosis.pm/util-contracts/build/contracts/${name}.json`))
 
     
-    const artifacts = safeArtifacts.concat(modulesArtifacts).concat(miscArtifacts)
+    const artifacts = safeArtifacts
+                        .concat(modulesArtifacts)
+                        .concat(miscArtifacts)
+                        .concat(dxArtifacts)
     contracts = {}
 
     for(artifact of artifacts){

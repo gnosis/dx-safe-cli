@@ -3,6 +3,8 @@ const yargs = require('yargs')
 
 const cli = yargs.usage('$0 <cmd> [args]')
 const commandParams = { cli }
+const chalk = require("chalk");
+const figlet = require('figlet')
 
 if (!process.env.DEBUG){
     process.env.DEBUG="cli*"
@@ -14,6 +16,16 @@ require('./cliCommands/createCmd')(commandParams)
 
 
 const width = Math.min(100, yargs.terminalWidth())
+
+console.log(
+    chalk.green(
+      figlet.textSync("DX Safe CLI", {
+        horizontalLayout: "default",
+        verticalLayout: "default"
+      })
+    )
+  );
+
 const argv = cli
     .wrap(width)
     .help('h')
