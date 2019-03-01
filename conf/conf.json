@@ -1,6 +1,6 @@
 {
     "moduleType": "seller",
-    "whitelistedTokens": ["0x6810e776880c02933d47db1b9fc05908e5386b96"],
-    "ethereumURL": "https://mainnet.infura.io",
+    "whitelistedTokens": ["0xc778417e063141139fce010982780140aa0cd5ab"],
+    "ethereumURL": "https://rinkeby.infura.io",
     "owners": ["0x41E0A978cBA3Ed9290d59e4c6C4Cf76d96A39eA6"]
 }

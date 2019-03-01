@@ -28,7 +28,7 @@ async function getWeb3(options){
         }
         else if(process.env.PK){
             const privateKeys = process.env.PK.split(',') // Private keys separated by comma
-            web3Instance = new Web3(new HDWalletProvider(), privateKeys)
+            web3Instance = new Web3(new HDWalletProvider(privateKeys, options.ethereumURL))
         }
         else{
             web3Instance = new Web3(options.ethereumURL)

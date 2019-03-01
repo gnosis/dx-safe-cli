@@ -21,6 +21,9 @@ function loadConf(file) {
 }
 
 async function validateCreation(conf){
+    
+    logger.info('Validating configuration file...')
+
     // Check required params are set.
     assert(conf.moduleType.indexOf("seller") || conf.moduleType.indexOf("complete"), "moduleType must be 'seller' or 'complete'")
     assert(Array.isArray(conf.whitelistedTokens), "whitelistedTokens must be an array")
