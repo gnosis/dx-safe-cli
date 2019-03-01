@@ -1,1 +1,6 @@
-{}
+{
+    "moduleType": "seller",
+    "whitelistedTokens": ["0x41E0A978cBA3Ed9290d59e4c6C4Cf76d96A39eA6"],
+    "ethereumURL": "https://mainnet.infura.io",
+    "owners": ["0x41E0A978cBA3Ed9290d59e4c6C4Cf76d96A39eA6"]
+}

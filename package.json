@@ -26,10 +26,15 @@
   },
   "homepage": "https://github.com/gnosis/dx-modules-cli#readme",
   "dependencies": {
+    "@gnosis.pm/util-contracts": "^2.0.0",
+    "axios": "^0.18.0",
     "debug-logger": "^0.4.1",
     "gnosis-safe": "git+https://github.com/gnosis/safe-contracts.git#temporal/v0.1.0-build",
     "gnosis-safe-modules": "git+https://github.com/gnosis/safe-modules.git#feature/dx-module-refactor",
     "truffle": "^4.1.15",
+    "truffle-contract": "^4.0.6",
+    "web3": "^1.0.0-beta.46",
+    "web3-utils": "^1.0.0-beta.46",
     "yargs": "^13.2.1"
   }
 }

@@ -5,7 +5,8 @@ const cli = yargs.usage('$0 <cmd> [args]')
 const commandParams = { cli }
 
 if (!process.env.DEBUG){
-    process.env.DEBUG = "*"
+    process.env.DEBUG="cli*"
+    process.env.DEBUG_LEVEL = "info"
 }
 
 // Create commands
