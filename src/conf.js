@@ -3,8 +3,7 @@ const { normalize, join } = require('path')
 const logger = require('debug-logger')('cli=conf')
 const assert = require('assert')
 const { isAddress } = require('web3-utils')
-const Web3 = require('web3')
-const axios = require('axios')
+const { getContracts } = require('./contracts')
 
 function loadConf(file) {
     let fileContent
@@ -38,22 +37,21 @@ async function validateCreation(conf){
     }
 
     assert(conf.ethereumURL, "ethereumURL param required")
-    
-    try{
-        response = await axios.post(
-            conf.ethereumURL,
-            {"jsonrpc":"2.0","method":"net_listening","params":[],"id":67}
-        )
-        assert(response.data.result, "ethereumURL must be an Ethereum RPC node")
-    }
-    catch(e){
-        throw Error("ethereumURL must be a valid ethereum rpc endpoint")
-    }
 
     // Check in blockchain that:
     // Token addresses look like ERC20 tokens
+    contracts = await getContracts(conf)
     
-
+    for (token of conf.whitelistedTokens){
+        const tokenInstance = await contracts.Token.at(token)
+        try{
+            const tokenSupply = await tokenInstance.totalSupply()
+            assert(tokenSupply.gt(0), `Token address ${token} has no supply or is not an ERC20 token`)
+        }
+        catch(e){
+            throw Error(`Token address ${token} has no supply or is not an ERC20 token`)
+        }
+    }
 
     logger.info("Validation done")
 }
