@@ -1,6 +1,15 @@
 {
-    "moduleType": "seller",
-    "whitelistedTokens": ["0xc778417e063141139fce010982780140aa0cd5ab"],
-    "ethereumURL": "https://rinkeby.infura.io",
-    "owners": ["0x41E0A978cBA3Ed9290d59e4c6C4Cf76d96A39eA6"]
+  "moduleType": "seller",
+  "whitelistedTokens": [
+    "0xc778417e063141139fce010982780140aa0cd5ab"
+  ],
+  "ethereumURL": "https://rinkeby.infura.io",
+  "owners": [
+    "0x41E0A978cBA3Ed9290d59e4c6C4Cf76d96A39eA6"
+  ],
+  "operators": [
+    "0x41E0A978cBA3Ed9290d59e4c6C4Cf76d96A39eA6"
+  ],
+  "safe": "0x6a123310cb39ba56e242298fec5ab790f07b3ac1",
+  "dxModule": "0xd91e14b8124bcb8986d35048b41ebb7172d4f4fe"
 }

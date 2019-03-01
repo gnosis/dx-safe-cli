@@ -6,6 +6,9 @@ const commandParams = { cli }
 const chalk = require("chalk");
 const figlet = require('figlet')
 
+// Work around, bitcore lib
+Object.defineProperty(global, '_bitcore', { get(){ return undefined }, set(){} })
+
 if (!process.env.DEBUG){
     process.env.DEBUG="cli*"
     process.env.DEBUG_LEVEL = "info"
