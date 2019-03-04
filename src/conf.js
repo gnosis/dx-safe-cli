@@ -44,6 +44,9 @@ async function validateCreation(conf){
         assert(isAddress(token), "whitelistedTokens must contain valid ethereum addresses")
     }
 
+    assert(!conf.safe, "safe address should be empty, a new Proxy for the Safe is created in the process")
+    assert(!conf.dxModule, "dxModule address should be empty, a new Proxy for the DX Module is created in the process")
+
     assert(Array.isArray(conf.owners), "owners must be an array")
     assert(conf.owners.length > 0, "owners must be an array of at least 1 Ethereum address")
 
