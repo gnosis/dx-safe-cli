@@ -135,7 +135,7 @@ function registerCommand ({ cli }) {
       if (safeTransaction.signatures){
         logger.info('MNEMONIC/PK present, performing transaction...')
         logger.debug(JSON.stringify(safeTransaction, null, 2))
-        const safeTx = await safeInstance.execTransaction(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, safeTransaction.signatures, {from: accounts[0], gas: 1000000})
+        const safeTx = await safeInstance.execTransaction(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, safeTransaction.signatures, {from: accounts[0], gas: 1e6, gasPrice: jsonConf.gasPrice})
         logger.info(`Safe transaction succesfully executed at tx ${safeTx.tx}`)
       }
       else{
@@ -151,7 +151,7 @@ function registerCommand ({ cli }) {
         for(var j=0; j<safeThreshold; j++){
           sigs += "000000000000000000000000" + safeOwners[j].replace('0x', '') + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
         }
-        const safeTx = await safeInstance.execTransaction.request(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1000000}).params[0]
+        const safeTx = await safeInstance.execTransaction.request(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1e6}).params[0]
         logger.info(`Finally exec the multisig with 1 of the owners:`)
         console.log(JSON.stringify(safeTx, null, 2))
       }

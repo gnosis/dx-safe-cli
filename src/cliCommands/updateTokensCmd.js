@@ -141,7 +141,7 @@ function registerCommand ({ cli }) {
       if (safeTransaction.signatures){
         logger.info('MNEMONIC/PK present, performing transaction...')
         logger.debug(JSON.stringify(safeTransaction, null, 2))
-        const safeTx = await safeInstance.execTransaction(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, safeTransaction.signatures, {from: accounts[0], gas: 1000000})
+        const safeTx = await safeInstance.execTransaction(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, safeTransaction.signatures, {from: accounts[0], gas: 1e6, gasPrice: jsonConf.gasPrice})
         logger.info(`Safe transaction succesfully executed at tx ${safeTx.tx}`)
       }
       else{
@@ -159,13 +159,13 @@ function registerCommand ({ cli }) {
         }
         logger.info('No MNEMONIC/PK present, you need to manually perform these transactions:')
         logger.info(`Send this transaction with ${safeThreshold} owner/s:`)
-        const approveHash = await safeInstance.approveHash.request(safeTransaction.multisigHash, {gas: 1000000}).params[0]
+        const approveHash = await safeInstance.approveHash.request(safeTransaction.multisigHash, {gas: 1e6}).params[0]
         console.log(JSON.stringify(approveHash, null, 2))
         let sigs = '0x'
         for(var j=0; j<safeThreshold; j++){
           sigs += "000000000000000000000000" + safeOwners[j].replace('0x', '') + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
         }
-        const safeTx = await safeInstance.execTransaction.request(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1000000}).params[0]
+        const safeTx = await safeInstance.execTransaction.request(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1e6}).params[0]
         logger.info(`Finally exec the multisig with 1 of the owners:`)
         console.log(JSON.stringify(safeTx, null, 2))
       }

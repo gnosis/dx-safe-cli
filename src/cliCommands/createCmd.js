@@ -88,7 +88,7 @@ function registerCommand ({ cli }) {
     
     let gnosisSafeData = await safeMastercopy.contract.setup.request(jsonConf.owners, 1, createAndAddModules.address, addModulesData).params[0].data
 
-    const safeTx = await proxyFactory.createProxy(safeMastercopy.address, gnosisSafeData, {from: accounts[0], gas: 1000000})
+    const safeTx = await proxyFactory.createProxy(safeMastercopy.address, gnosisSafeData, {from: accounts[0], gasPrice: jsonConf.gasPrice, gas: 1e6})
 
     assert(safeTx.receipt.status == "0x1", safeTx)
     logger.info(`Safe and Module succesfully created at tx ${safeTx.tx}`)

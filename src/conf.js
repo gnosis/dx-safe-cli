@@ -38,6 +38,8 @@ async function validateCreation(conf){
 
     assert(conf.ethereumURL, "ethereumURL param required")
 
+    await validateGasPrice(conf)
+
     // Check required params are set.
     assert(conf.moduleType.indexOf("seller") || conf.moduleType.indexOf("complete"), "moduleType must be 'seller' or 'complete'")
 
@@ -59,6 +61,7 @@ async function validateUpdateTokens(conf){
     assert(conf.ethereumURL, "ethereumURL param required")
 
     await validateTokens(conf)
+    await validateGasPrice(conf)
 
     assert(conf.safe, "safe address is mandatory in the configuration file")
     assert(conf.dxModule, "dxModule address is mandatory in the configuration file")
@@ -72,6 +75,7 @@ async function validateUpdateOperators(conf){
     assert(conf.ethereumURL, "ethereumURL param required")
 
     await validateOperators(conf)
+    await validateGasPrice(conf)
 
     assert(conf.safe, "safe address is mandatory in the configuration file")
     assert(conf.dxModule, "dxModule address is mandatory in the configuration file")
@@ -118,6 +122,11 @@ async function validateOwners(conf){
     for (owner of conf.owners){
         assert(isAddress(owner), "owners must contain valid ethereum addresses")
     }
+}
+
+async function validateGasPrice(conf){
+    assert(conf.gasPrice, "gasPrice is mandatory, units in wei")
+    assert(conf.gasPrice <= 1e11, "gasPrice higher than 100 Gwei, that's very expensive, was on purpose?")
 }
 
 module.exports = {
