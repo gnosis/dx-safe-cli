@@ -36,32 +36,41 @@ async function validateCreation(conf){
 
     logger.info('Validating configuration file...')
 
+    assert(conf.ethereumURL, "ethereumURL param required")
+
     // Check required params are set.
     assert(conf.moduleType.indexOf("seller") || conf.moduleType.indexOf("complete"), "moduleType must be 'seller' or 'complete'")
+
+    await validateTokens(conf)
+    await validateOwners(conf)
+
+    assert(!conf.safe, "safe address should be empty, a new Proxy for the Safe is created in the process")
+    assert(!conf.dxModule, "dxModule address should be empty, a new Proxy for the DX Module is created in the process")
+
+    await validateOperators(conf)
+
+    logger.info("Validation done")
+}
+
+async function validateUpdateTokens(conf){
+    logger.info('Validating configuration file...')
+
+    assert(conf.ethereumURL, "ethereumURL param required")
+
+    await validateTokens(conf)
+
+    assert(conf.safe, "safe address is mandatory in the configuration file")
+    assert(conf.dxModule, "dxModule address is mandatory in the configuration file")
+
+    logger.info("Validation done")
+}
+
+async function validateTokens(conf){
     assert(Array.isArray(conf.whitelistedTokens), "whitelistedTokens must be an array")
 
     for (token of conf.whitelistedTokens){
         assert(isAddress(token), "whitelistedTokens must contain valid ethereum addresses")
     }
-
-    assert(!conf.safe, "safe address should be empty, a new Proxy for the Safe is created in the process")
-    assert(!conf.dxModule, "dxModule address should be empty, a new Proxy for the DX Module is created in the process")
-
-    assert(Array.isArray(conf.owners), "owners must be an array")
-    assert(conf.owners.length > 0, "owners must be an array of at least 1 Ethereum address")
-
-    for (owner of conf.owners){
-        assert(isAddress(owner), "owners must contain valid ethereum addresses")
-    }
-
-    assert(Array.isArray(conf.operators), "operators must be an array")
-    assert(conf.operators.length > 0, "operators must be an array of at least 1 Ethereum address")
-
-    for (operator of conf.operators){
-        assert(isAddress(operator), "operators must contain valid ethereum addresses")
-    }
-
-    assert(conf.ethereumURL, "ethereumURL param required")
 
     // Check in blockchain that:
     // Token addresses look like ERC20 tokens
@@ -77,12 +86,29 @@ async function validateCreation(conf){
             throw Error(`Token address ${token} has no supply or is not an ERC20 token`)
         }
     }
+}
 
-    logger.info("Validation done")
+async function validateOperators(conf){
+    assert(Array.isArray(conf.operators), "operators must be an array")
+    assert(conf.operators.length > 0, "operators must be an array of at least 1 Ethereum address")
+
+    for (operator of conf.operators){
+        assert(isAddress(operator), "operators must contain valid ethereum addresses")
+    }
+}
+
+async function validateOwners(conf){
+    assert(Array.isArray(conf.owners), "owners must be an array")
+    assert(conf.owners.length > 0, "owners must be an array of at least 1 Ethereum address")
+
+    for (owner of conf.owners){
+        assert(isAddress(owner), "owners must contain valid ethereum addresses")
+    }
 }
 
 module.exports = {
     loadConf,
     validateCreation,
-    writeConf
+    writeConf,
+    validateUpdateTokens
 }

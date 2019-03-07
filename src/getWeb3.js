@@ -24,7 +24,7 @@ async function getWeb3(options){
 
         // If Mnemonic or private key provided, use it
         if (process.env.MNEMONIC){
-            web3Instance = new Web3(new HDWalletProvider(process.env.MNEMONIC, options.ethereumURL))
+            web3Instance = new Web3(new HDWalletProvider(process.env.MNEMONIC, options.ethereumURL, 0, 10))
         }
         else if(process.env.PK){
             const privateKeys = process.env.PK.split(',') // Private keys separated by comma

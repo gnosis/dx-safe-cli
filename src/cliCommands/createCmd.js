@@ -46,8 +46,8 @@ function registerCommand ({ cli }) {
     // Dry run
     logger.info("----------------------------------------------------------------------------------")
     logger.info("Ethereum Network ID:          ", networkID)
-    logger.info("Ethereum Accounts:            ", accounts)
-    logger.info("Safe Owners:                  ", jsonConf.owners)
+    logger.info("Ethereum Accounts:            ", JSON.stringify(accounts))
+    logger.info("Safe Owners:                  ", JSON.stringify(jsonConf.owners))
 
     for (var i = 0; i < jsonConf.whitelistedTokens.length; i++) {
       tokenAddress = jsonConf.whitelistedTokens[i]
@@ -93,8 +93,8 @@ function registerCommand ({ cli }) {
     assert(safeTx.receipt.status == "0x1", safeTx)
     logger.info(`Safe and Module succesfully created at tx ${safeTx.tx}`)
 
-    jsonConf.safe = safeTx.logs[0].args.proxy
-    jsonConf.dxModule = safeTx.logs[1].args.proxy
+    jsonConf.dxModule = safeTx.logs[0].args.proxy
+    jsonConf.safe = safeTx.logs[1].args.proxy
 
 
     logger.info("----------------------------------------------------------------------------------")

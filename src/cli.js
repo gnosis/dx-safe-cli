@@ -16,6 +16,7 @@ if (!process.env.DEBUG){
 
 // Create commands
 require('./cliCommands/createCmd')(commandParams)
+require('./cliCommands/updateTokensCmd')(commandParams)
 
 
 const width = Math.min(100, yargs.terminalWidth())
