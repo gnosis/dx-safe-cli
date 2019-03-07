@@ -48,6 +48,7 @@ async function validateCreation(conf){
     assert(!conf.dxModule, "dxModule address should be empty, a new Proxy for the DX Module is created in the process")
 
     await validateOperators(conf)
+    assert(process.env.PK || process.env.MNEMONIC, "MNEMONIC or PK must be passed by Environment variable. Mandatory for creation.")
 
     logger.info("Validation done")
 }
