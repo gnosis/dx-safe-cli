@@ -4,6 +4,7 @@ const axios = require('axios')
 const Web3 = require('web3')
 const HDWalletProvider = require("truffle-hdwallet-provider");
 const assert = require('assert')
+const defaultGanacheMnemonic = 'myth like bonus scare over problem client lizard pioneer submit female collect'
 
 
 let web3Instance
@@ -31,7 +32,7 @@ async function getWeb3(options){
             web3Instance = new Web3(new HDWalletProvider(privateKeys, options.ethereumURL))
         }
         else{
-            web3Instance = new Web3(options.ethereumURL)
+            web3Instance = new Web3(new HDWalletProvider(defaultGanacheMnemonic, options.ethereumURL))
         }
 
         return web3Instance

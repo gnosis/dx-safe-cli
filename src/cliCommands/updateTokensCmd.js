@@ -60,8 +60,8 @@ function registerCommand ({ cli }) {
     if (process.env.MNEMONIC || process.env.PK){
 
         // accounts are already set in web3.eth.accounts, we need to validate that we have enough owners
-        safeThreshold = await safeInstance.getThreshold()
-        safeOwners = await safeInstance.getOwners()
+        const safeThreshold = await safeInstance.getThreshold()
+        const safeOwners = await safeInstance.getOwners()
 
         logger.info(`Safe contract ${jsonConf.safe} has a threshold of ${safeThreshold} owner/s`)
         logger.info(`Safe Owners: ${safeOwners}`)
@@ -145,11 +145,12 @@ function registerCommand ({ cli }) {
         logger.info(`Safe transaction succesfully executed at tx ${safeTx.tx}`)
       }
       else{
+        const safeThreshold = await safeInstance.getThreshold()
         logger.info('No MNEMONIC/PK present, you need to manually perform these transactions:')
         logger.info(`Send this transaction with ${safeThreshold} owner/s:`)
-        const approveHash = await safeInstance.approveHash.request(safeTransaction.multisigHash, {from: accounts[0], gas: 1000000})
+        const approveHash = await safeInstance.approveHash.request(safeTransaction.multisigHash, {from: accounts[0], gas: 1000000}).params[0]
         console.log(JSON.stringify(approveHash, null, 2))
-        const safeTx = await safeInstance.execTransaction.request(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, safeTransaction.signatures, {from: accounts[0], gas: 1000000})
+        const safeTx = await safeInstance.execTransaction.request(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, [], {from: accounts[0], gas: 1000000}).params[0]
         logger.info(`Finally exec the multisig with 1 of the owners:`)
         console.log(JSON.stringify(safeTx, null, 2))
       }
