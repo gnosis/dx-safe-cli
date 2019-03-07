@@ -1,5 +1,5 @@
 {
-  "name": "dx-safe-cli",
+  "name": "@gnosis.pm/dx-safe-cli",
   "version": "0.0.1",
   "description": "CLI for managing Dutch Exchange Safe modules (Complete and Seller editions)",
   "main": "src/cli.js",

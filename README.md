@@ -9,7 +9,7 @@ CLI that manages the creation of Dutch Exchange modules for the [Safe](https://s
 ## Install
 ```sh
 # You can install it globally, in another project...
-npm i -g dx-safe-cli
+npm i -g @gnosis.pm/dx-safe-cli
 
 # Or clone the repo
 git clone https://github.com/gnosis/dx-safe-cli
@@ -22,7 +22,7 @@ There is an example of the configuration file in `conf/conf.json` fill the param
 
 ## Running the CLI
 ```sh
-dx-safe-cli # globally
+@gnosis.pm/dx-safe-cli # globally
 ./src/cli.js # locally
 ```
 
