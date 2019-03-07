@@ -18,6 +18,7 @@ if (!process.env.DEBUG){
 require('./cliCommands/createCmd')(commandParams)
 require('./cliCommands/updateTokensCmd')(commandParams)
 require('./cliCommands/updateOperatorsCmd')(commandParams)
+require('./cliCommands/updateDxCmd')(commandParams)
 
 
 const width = Math.min(100, yargs.terminalWidth())
