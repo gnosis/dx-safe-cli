@@ -66,6 +66,19 @@ async function validateUpdateTokens(conf){
     logger.info("Validation done")
 }
 
+async function validateUpdateOperators(conf){
+    logger.info('Validating configuration file...')
+
+    assert(conf.ethereumURL, "ethereumURL param required")
+
+    await validateOperators(conf)
+
+    assert(conf.safe, "safe address is mandatory in the configuration file")
+    assert(conf.dxModule, "dxModule address is mandatory in the configuration file")
+
+    logger.info("Validation done")
+}
+
 async function validateTokens(conf){
     assert(Array.isArray(conf.whitelistedTokens), "whitelistedTokens must be an array")
 
@@ -111,5 +124,6 @@ module.exports = {
     loadConf,
     validateCreation,
     writeConf,
-    validateUpdateTokens
+    validateUpdateTokens,
+    validateUpdateOperators
 }
