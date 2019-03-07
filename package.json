@@ -1,14 +1,17 @@
 {
-  "name": "dx-modules-cli",
+  "name": "dx-safe-cli",
   "version": "0.0.1",
   "description": "CLI for managing Dutch Exchange Safe modules (Complete and Seller editions)",
-  "main": "index.js",
+  "main": "src/cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gnosis/dx-modules-cli.git"
+    "url": "git+https://github.com/gnosis/dx-safe-cli.git"
+  },
+  "bin": {
+    "dx-safe-cli": "./src/cli.js"
   },
   "keywords": [
     "safe",
@@ -22,9 +25,9 @@
   "author": "denis@gnosis.pm",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gnosis/dx-modules-cli/issues"
+    "url": "https://github.com/gnosis/dx-safe-cli/issues"
   },
-  "homepage": "https://github.com/gnosis/dx-modules-cli#readme",
+  "homepage": "https://github.com/gnosis/dx-safe-cli#readme",
   "dependencies": {
     "@gnosis.pm/dx-contracts": "^2.0.0",
     "@gnosis.pm/util-contracts": "^2.0.0",
