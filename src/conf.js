@@ -83,6 +83,20 @@ async function validateUpdateOperators(conf){
     logger.info("Validation done")
 }
 
+async function validateUpdateOwners(conf){
+    logger.info('Validating configuration file...')
+
+    assert(conf.ethereumURL, "ethereumURL param required")
+
+    await validateOwners(conf)
+    await validateGasPrice(conf)
+
+    assert(conf.safe, "safe address is mandatory in the configuration file")
+    assert(conf.dxModule, "dxModule address is mandatory in the configuration file")
+
+    logger.info("Validation done")
+}
+
 async function validateUpdateDx(conf){
     logger.info('Validating configuration file...')
 
@@ -152,5 +166,6 @@ module.exports = {
     writeConf,
     validateUpdateTokens,
     validateUpdateOperators,
-    validateUpdateDx
+    validateUpdateDx,
+    validateUpdateOwners
 }
