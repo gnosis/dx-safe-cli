@@ -135,6 +135,10 @@ async function validateOwners(conf){
     for (owner of conf.owners){
         assert(isAddress(owner), "owners must contain valid ethereum addresses")
     }
+
+    // Validate too the threshold
+    assert(conf.safeThreshold > 0, "safeThreshold is mandatory and should be at least 1")
+    assert(conf.safeThreshold <= conf.owners.length, "safeThreshold cannot be higher than the amount of owners")
 }
 
 async function validateGasPrice(conf){
