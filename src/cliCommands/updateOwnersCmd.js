@@ -65,7 +65,8 @@ function registerCommand ({ cli }) {
     for (owner of ownersToRemove) {
       // find owner position and previous. Safe contract uses a linked list
       const ownerIndex = contractOwners.indexOf(owner)
-      const multisigData = safeInstance.removeOwner.request(contractOwners[ownerIndex-1], owner, jsonConf.safeThreshold).params[0].data
+      const prevOwner = ownerIndex? contractOwners[ownerIndex-1]: "0x0000000000000000000000000000000000000001"
+      const multisigData = safeInstance.removeOwner.request(prevOwner, owner, jsonConf.safeThreshold).params[0].data
       let multisigHash = await safeInstance.getTransactionHash(safeInstance.address, 0, multisigData, 0, 0, 0, 0, 0, 0, safeNonce)
       safeTransactions.push({data: multisigData, multisigHash, safeNonce})
       safeNonce++
@@ -76,7 +77,8 @@ function registerCommand ({ cli }) {
       const newOwner = ownersToSwap.new[i]
       // find owner position and previous. Safe contract uses a linked list
       const ownerIndex = contractOwners.indexOf(oldOwner)
-      const multisigData = safeInstance.swapOwner.request(contractOwners[ownerIndex-1], oldOwner, newOwner).params[0].data
+      const prevOwner = ownerIndex? contractOwners[ownerIndex-1]: "0x0000000000000000000000000000000000000001"
+      const multisigData = safeInstance.swapOwner.request(prevOwner, oldOwner, newOwner).params[0].data
       let multisigHash = await safeInstance.getTransactionHash(safeInstance.address, 0, multisigData, 0, 0, 0, 0, 0, 0, safeNonce)
       safeTransactions.push({data: multisigData, multisigHash, safeNonce})
       safeNonce++
