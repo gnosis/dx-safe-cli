@@ -21,15 +21,16 @@ npm i
 There is an example of the configuration file in [conf/conf.example.json](conf/conf.example.json) fill the parameters desired values.
 
 Safe params:
+
 | Name  | Type  | Description|
-|-------|-------|---|---|---|
+|-------|-------|------------|
 | `ethereumURL`| String  | Url of a Ethereum node (e.g. https://rinkeby.infura.io) |
 | `gasPrice`|  Number | Gas price in Wei (e.g. `10000000000`)  |
 | `owners`| Array of Strings (ethereum addresses)  |  Owners of the Safe multisig account  |
 | `safeThreshold`| Number  |  Number of owner signatures required for executing transactions in the safe  |
 | `moduleType` |  Enum: [`seller` \| `complete`]  |  Type of DutchX module used for the operator. There\'s currently two options: `seller` can only sell, `complete` can sell and buy |
 | `whitelistedTokens`| Array of Strings (ethereum addresses)  |  ERC20 tokens that are whitelisted. Only whitelisted tokens can be traded.  |
-| `operators`| Array of Strings (ethereum addresses)  |  Addresses for the operators. The operators are users that can trade the whitelisted tokens in the DutchX on behalf of the safe address. Note that operators don\'t cannot execute any other transaction using the safe funds. Also, the operators don\'t need to surplus the `safeThreshold` |
+| `operators`| Array of Strings (ethereum addresses)  |  Addresses for the operators. The operators are users that can trade the whitelisted tokens in the DutchX on behalf of the safe address. Note that operators cannot execute any other transaction using the safe funds. Also, the operators don\'t need to surplus the `safeThreshold` |
 
 ## Running the CLI
 ```sh
