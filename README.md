@@ -34,7 +34,7 @@ Safe params:
 ## Running the CLI
 ```sh
 @gnosis.pm/dx-safe-cli # globally
-./src/cli.js # locally
+npm run cli # locally
 ```
 
 It will output all the possible options
