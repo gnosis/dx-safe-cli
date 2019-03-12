@@ -10,5 +10,6 @@
   "operators": [
     ""
   ],
+  "safeThreshold": 3,
   "gasPrice": 10000000000
 }
