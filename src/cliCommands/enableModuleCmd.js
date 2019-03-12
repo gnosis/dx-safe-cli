@@ -10,7 +10,7 @@ const createVault = util.promisify(lightwallet.keystore.createVault).bind(lightw
 const safeUtils = require('gnosis-safe/test/utils')
 
 function registerCommand ({ cli }) {
-  cli.command('disable-module [--conf file]', 'Disables dx module from safe contract. For this operation, if MNEMONIC or private keys provided, it should have ownership of the safe.', yargs => {
+  cli.command('enable-module [--conf file]', 'Enables dx module from safe contract. For this operation, if MNEMONIC or private keys provided, it should have ownership of the safe.', yargs => {
     yargs.option('conf', {
       type: 'string',
       describe: 'The file to read the configuration'
@@ -37,14 +37,12 @@ function registerCommand ({ cli }) {
     const enabledModules = await safeInstance.getModules()
     const isModuleEnabled = enabledModules.includes(moduleInstance.address) ? true:false
 
-    if (!isModuleEnabled){
-      logger.info("Nothing to be done, already disabled")
+    if (isModuleEnabled){
+      logger.info("Nothing to be done, already enabled")
       process.exit(0)
     }
-    const moduleIndex = enabledModules.indexOf(jsonConf.dxModule)
-    const prevModule = moduleIndex ? enabledModules[moduleIndex-1] : "0x0000000000000000000000000000000000000001"
 
-    const multisigData = safeInstance.disableModule.request(prevModule, jsonConf.dxModule).params[0].data
+    const multisigData = safeInstance.enableModule.request(jsonConf.dxModule).params[0].data
     let multisigHash = await safeInstance.getTransactionHash(safeInstance.address, 0, multisigData, 0, 0, 0, 0, 0, 0, safeNonce)
     safeTransactions.push({data: multisigData, multisigHash, safeNonce})
 
@@ -95,7 +93,7 @@ function registerCommand ({ cli }) {
         {
             name: "confirmation",
             type: "confirm",
-            message: `ARE YOU SURE YOU WANT TO DISABLE THE MODULE?`
+            message: `ARE YOU SURE YOU WANT TO ENABLE THE MODULE?`
         }
         )
         if(!confirmation){
