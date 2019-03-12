@@ -62,3 +62,7 @@ typings/
 
 # Visual code IDE
 .vscode
+
+.history
+conf/*
+!conf/conf.example.json

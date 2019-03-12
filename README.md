@@ -18,7 +18,7 @@ npm i
 ````
 
 ## Configuration file
-There is an example of the configuration file in `conf/conf.json` fill the parameters desired values.
+There is an example of the configuration file in [conf/conf.example.json](conf/conf.example.json) fill the parameters desired values.
 
 ## Running the CLI
 ```sh
