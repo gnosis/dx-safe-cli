@@ -10,7 +10,7 @@ const createVault = util.promisify(lightwallet.keystore.createVault).bind(lightw
 const safeUtils = require('gnosis-safe/test/utils')
 
 function registerCommand ({ cli }) {
-  cli.command('update-dx [--conf file]', 'Modifies DX proxy of the DX module. For this operation, if MNEMONIC or private keys provided, it should have ownership of the safe.', yargs => {
+  cli.command('disable-module [--conf file]', 'Disables dx module from safe contract. For this operation, if MNEMONIC or private keys provided, it should have ownership of the safe.', yargs => {
     yargs.option('conf', {
       type: 'string',
       describe: 'The file to read the configuration'
@@ -34,14 +34,13 @@ function registerCommand ({ cli }) {
     let safeTransactions = []
     let safeNonce = await safeInstance.nonce()  
 
-    const isModuleEnabled = (await safeInstance.modules(jsonConf.dxModule)) ? true:false
+    const enabledModules = await safeInstance.getModules()
+    const isModuleEnabled = enabledModules.includes(moduleInstance.address) ? true:false
 
     if (!isModuleEnabled){
       logger.info("Nothing to be done, already disabled")
       process.exit(0)
     }
-
-    const enabledModules = await safeInstance.getModules()
     const moduleIndex = enabledModules.indexOf(jsonConf.dxModule)
     const prevModule = moduleIndex ? enabledModules[moduleIndex-1] : "0x0000000000000000000000000000000000000001"
 
@@ -121,7 +120,7 @@ function registerCommand ({ cli }) {
       if (safeTransaction.signatures){
         logger.info('MNEMONIC/PK present, performing transaction...')
         logger.debug(JSON.stringify(safeTransaction, null, 2))
-        const safeTx = await safeInstance.execTransaction(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, safeTransaction.signatures, {from: accounts[0], gas: 1e6, gasPrice: jsonConf.gasPrice})
+        const safeTx = await safeInstance.execTransaction(safeInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, safeTransaction.signatures, {from: accounts[0], gas: 1e6, gasPrice: jsonConf.gasPrice})
         logger.info(`Safe transaction succesfully executed at tx ${safeTx.tx}`)
       }
       else{
@@ -136,7 +135,7 @@ function registerCommand ({ cli }) {
         for(var j=0; j<safeThreshold; j++){
           sigs += "000000000000000000000000" + safeOwners[j].replace('0x', '') + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
         }
-        const safeTx = await safeInstance.execTransaction.request(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1e6}).params[0]
+        const safeTx = await safeInstance.execTransaction.request(safeInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1e6}).params[0]
         logger.info(`Finally exec the multisig with 1 of the owners:`)
         console.log(JSON.stringify(safeTx, null, 2))
       }

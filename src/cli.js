@@ -20,7 +20,7 @@ require('./cliCommands/updateTokensCmd')(commandParams)
 require('./cliCommands/updateOperatorsCmd')(commandParams)
 require('./cliCommands/updateDxCmd')(commandParams)
 require('./cliCommands/updateOwnersCmd')(commandParams)
-
+require('./cliCommands/disableModuleCmd')(commandParams)
 
 const width = Math.min(100, yargs.terminalWidth())
 
