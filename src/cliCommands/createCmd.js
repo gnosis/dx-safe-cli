@@ -1,11 +1,10 @@
-const WORKING_DIR = process.cwd()
 const logger = require('debug-logger')('cli:createCmd')
 const { loadConf, validateCreation, writeConf } = require('../conf')
 const { getContracts } = require('../contracts')
 const inquirer = require('inquirer')
 const getWeb3 = require('../getWeb3')
 const util = require('util');
-const { createAndAddModulesData } = require('gnosis-safe/test/utils')
+const { createAndAddModulesData } = require('@gnosis.pm/safe-contracts/test/utils')
 const assert = require('assert')
 
 function registerCommand ({ cli }) {

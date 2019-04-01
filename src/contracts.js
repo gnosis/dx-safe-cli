@@ -11,12 +11,12 @@ async function loadContracts(conf){
         'Proxy',
         'ProxyFactory',
         'CreateAndAddModules'
-    ].map((name) => require(`gnosis-safe/build/contracts/${name}.json`))
+    ].map((name) => require(`@gnosis.pm/safe-contracts/build/contracts/${name}.json`))
 
     const modulesArtifacts = [
         'DutchXCompleteModule',
         'DutchXSellerModule'
-    ].map((name) => require(`gnosis-safe-modules/build/contracts/${name}.json`))
+    ].map((name) => require(`@gnosis.pm/safe-modules/build/contracts/${name}.json`))
 
     const dxArtifacts = [
         'DutchExchange',

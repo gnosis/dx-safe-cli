@@ -7,7 +7,7 @@ const util = require('util');
 const assert = require('assert')
 const lightwallet = require('eth-lightwallet')
 const createVault = util.promisify(lightwallet.keystore.createVault).bind(lightwallet.keystore)
-const safeUtils = require('gnosis-safe/test/utils')
+const safeUtils = require('@gnosis.pm/safe-contracts/test/utils')
 
 function registerCommand ({ cli }) {
   cli.command('enable-module [--conf file]', 'Enables dx module from safe contract. For this operation, if MNEMONIC or private keys provided, it should have ownership of the safe.', yargs => {

@@ -1,13 +1,8 @@
 const logger = require('debug-logger')('cli:createCmd')
 const { loadConf, validateStatus } = require('../conf')
 const { getContracts } = require('../contracts')
-const inquirer = require('inquirer')
 const getWeb3 = require('../getWeb3')
 const util = require('util');
-const assert = require('assert')
-const lightwallet = require('eth-lightwallet')
-const createVault = util.promisify(lightwallet.keystore.createVault).bind(lightwallet.keystore)
-const safeUtils = require('gnosis-safe/test/utils')
 
 function registerCommand ({ cli }) {
   cli.command('status [--conf file]', 'Shows the status of safe contract and module.', yargs => {
