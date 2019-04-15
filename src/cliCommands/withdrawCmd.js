@@ -69,7 +69,8 @@ function registerCommand ({ cli }) {
     const tokenAmountWei = web3.toBigNumber(numWithOffsetForDecimals).mul("1e" + tokenDecimals).div(1000)
     const tokenName = await tokenInstance.name()
     const tokenSymbol = await tokenInstance.symbol()
-    const safeBalance = (await tokenInstance.balanceOf(safeInstance.address)).div("1e"+tokenDecimals)
+    const safeBalanceWei = await tokenInstance.balanceOf(safeInstance.address)
+    const safeBalance = safeBalanceWei.div("1e"+tokenDecimals)
 
     if(tokensInDX.gt(0)){
       let multisigData
@@ -82,7 +83,10 @@ function registerCommand ({ cli }) {
       const multisigHash = await safeInstance.getTransactionHash(dxProxy.address, 0, multisigData, 0, 0, 0, 0, 0, 0, safeNonce)
       safeTransactions.push({data: multisigData, multisigHash, safeNonce, to: dxInstance.address})
       safeNonce++
-    }    
+    }
+    
+    const totalTokensHold = tokensInDX.add(safeBalanceWei)
+    assert(totalTokensHold.gte(tokenAmountWei), "Not enough tokens in DX and safe contract: " + totalTokensHold.div("1e" + tokenDecimals).toFixed() + " " + tokenSymbol)
 
     // Transfer tokens from the safe contract to the "to" address
     const multisigData2 = tokenInstance.transfer.request(to, tokenAmountWei).params[0].data
@@ -134,9 +138,10 @@ function registerCommand ({ cli }) {
         logger.info("----------------------------------------------------------------------------------")
         logger.info("Token to withdraw:            ", token)
         logger.info("Token name:                   ", tokenName + " (" + tokenSymbol + ")")
-        logger.info("Token Decimals:             ", tokenDecimals)
+        logger.info("Token Decimals:               ", tokenDecimals)
+        logger.info("DX balance                    ", tokensInDX.div("1e"+tokenDecimals).toString() + " " + tokenSymbol)
         logger.info("Safe balance:                 ", safeBalance + " " + tokenSymbol)
-        logger.info("Amount:                       ", amount + " " + tokenSymbol)
+        logger.info("Amount to transfer:           ", amount + " " + tokenSymbol)
         logger.info("----------------------------------------------------------------------------------")
 
         const { confirmation } = await inquirer.prompt(
