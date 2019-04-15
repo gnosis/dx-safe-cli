@@ -23,6 +23,7 @@ require('./cliCommands/updateOwnersCmd')(commandParams)
 require('./cliCommands/disableModuleCmd')(commandParams)
 require('./cliCommands/enableModuleCmd')(commandParams)
 require('./cliCommands/statusCmd')(commandParams)
+require('./cliCommands/withdrawCmd')(commandParams)
 
 const width = Math.min(100, yargs.terminalWidth())
 
