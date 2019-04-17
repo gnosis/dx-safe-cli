@@ -16,11 +16,17 @@ async function getWeb3(options){
             response = await axios.post(
                 options.ethereumURL,
                 {"jsonrpc":"2.0","method":"net_listening","params":[],"id":67},
-               {timeout: 10000} 
+               {
+                   timeout: 10000,
+                   headers: {
+                        'Content-Type': 'application/json'
+                    }
+                } 
             )
             assert(response.data.result, "ethereumURL must be an Ethereum RPC node")
         }
         catch(e){
+            console.log(e)
             throw Error("ethereumURL must be a valid ethereum rpc endpoint")
         }
 

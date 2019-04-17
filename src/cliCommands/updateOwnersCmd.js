@@ -167,8 +167,9 @@ function registerCommand ({ cli }) {
       else{
         const safeThreshold = await safeInstance.getThreshold()
         const safeOwners = (await safeInstance.getOwners()).sort()
-        logger.info("Operators to remove %s        ", JSON.stringify(operatorsToRemove))
-        logger.info("Operators to add    %s        ", JSON.stringify(operatorsToAdd))
+        logger.info("Owners to remove             %s", JSON.stringify(ownersToRemove))
+        logger.info("Owners to add                %s", JSON.stringify(ownersToAdd))
+        logger.info("Owners to swap               %s", JSON.stringify(ownersToSwap))
         logger.info('No MNEMONIC/PK present, you need to manually perform these transactions:')
         logger.info(`Send this transaction with ${safeThreshold} owner/s:`)
         const approveHash = await safeInstance.approveHash.request(safeTransaction.multisigHash, {gas: 1000000}).params[0]
