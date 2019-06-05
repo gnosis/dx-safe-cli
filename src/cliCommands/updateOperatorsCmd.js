@@ -1,5 +1,5 @@
 const logger = require('debug-logger')('cli:createCmd')
-const { loadConf, validateUpdateOperators } = require('../conf')
+const { loadConf, validateUpdateOperators, validateSignOffline } = require('../conf')
 const { getContracts } = require('../contracts')
 const inquirer = require('inquirer')
 const getWeb3 = require('../getWeb3')
@@ -140,7 +140,7 @@ function registerCommand ({ cli }) {
       }
       else{
         validateSignOffline(jsonConf)
-        const ownersToSign = jsonConf.ownersToSign
+        const ownersToSign = jsonConf.ownersToSign.sort()
 
         const safeThreshold = await safeInstance.getThreshold()
         logger.info("Operators to remove %s        ", JSON.stringify(operatorsToRemove))

@@ -1,5 +1,5 @@
 const logger = require('debug-logger')('cli:withdrawCmd')
-const { loadConf, validateWithdraw } = require('../conf')
+const { loadConf, validateWithdraw, validateSignOffline } = require('../conf')
 const { getContracts } = require('../contracts')
 const getWeb3 = require('../getWeb3')
 const { isAddress } = require('web3-utils')
@@ -178,7 +178,7 @@ function registerCommand ({ cli }) {
       }
       else{
         validateSignOffline(jsonConf)
-        const ownersToSign = jsonConf.ownersToSign
+        const ownersToSign = jsonConf.ownersToSign.sort()
         
         const safeThreshold = await safeInstance.getThreshold()
 

@@ -1,5 +1,5 @@
 const logger = require('debug-logger')('cli:createCmd')
-const { loadConf, validateUpdateDx } = require('../conf')
+const { loadConf, validateUpdateDx, validateSignOffline } = require('../conf')
 const { getContracts } = require('../contracts')
 const inquirer = require('inquirer')
 const getWeb3 = require('../getWeb3')
@@ -128,7 +128,7 @@ function registerCommand ({ cli }) {
       }
       else{
         validateSignOffline(jsonConf)
-        const ownersToSign = jsonConf.ownersToSign
+        const ownersToSign = jsonConf.ownersToSign.sort()
 
         const safeThreshold = await safeInstance.getThreshold()
         logger.info("DX Proxy address              ", dxProxy.address)

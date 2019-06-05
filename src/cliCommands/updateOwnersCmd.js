@@ -1,5 +1,5 @@
 const logger = require('debug-logger')('cli:createCmd')
-const { loadConf, validateUpdateOwners } = require('../conf')
+const { loadConf, validateUpdateOwners, validateSignOffline } = require('../conf')
 const { getContracts } = require('../contracts')
 const inquirer = require('inquirer')
 const getWeb3 = require('../getWeb3')
@@ -166,7 +166,7 @@ function registerCommand ({ cli }) {
       }
       else{
         validateSignOffline(jsonConf)
-        const ownersToSign = jsonConf.ownersToSign
+        const ownersToSign = jsonConf.ownersToSign.sort()
         
         const safeThreshold = await safeInstance.getThreshold()
         

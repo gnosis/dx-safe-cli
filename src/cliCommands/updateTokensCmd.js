@@ -1,5 +1,5 @@
 const logger = require('debug-logger')('cli:createCmd')
-const { loadConf, validateUpdateTokens } = require('../conf')
+const { loadConf, validateUpdateTokens, validateSignOffline } = require('../conf')
 const { getContracts } = require('../contracts')
 const inquirer = require('inquirer')
 const getWeb3 = require('../getWeb3')
@@ -146,7 +146,7 @@ function registerCommand ({ cli }) {
       }
       else{
         validateSignOffline(jsonConf)
-        const ownersToSign = jsonConf.ownersToSign
+        const ownersToSign = jsonConf.ownersToSign.sort()
 
         const safeThreshold = await safeInstance.getThreshold()
 
@@ -166,16 +166,16 @@ function registerCommand ({ cli }) {
         console.log(JSON.stringify(approveHash, null, 2))
         let sigs = '0x'
         for(var j=0; j<safeThreshold; j++){
-          sigs += "000000000000000000000000" + ownersToSign[j].replace('0x', '') + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
+          sigs += "000000000000000000000000" + ownersToSign[j].replace('0x', '').toLowerCase() + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
         }
         const safeTx = await safeInstance.execTransaction.request(moduleInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1e6}).params[0]
+        console.log("safeTransaction Data...", safeTransaction.data)
         logger.info(`Finally exec the multisig with 1 account:`)
         console.log(JSON.stringify(safeTx, null, 2))
       }
     }    
 
     process.exit(0)
-    
 
   })
 }

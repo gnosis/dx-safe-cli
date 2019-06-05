@@ -126,7 +126,7 @@ function registerCommand ({ cli }) {
       else{
 
         validateSignOffline(jsonConf)
-        const ownersToSign = jsonConf.ownersToSign
+        const ownersToSign = jsonConf.ownersToSign.sort()
         const safeThreshold = await safeInstance.getThreshold()
         logger.info("DX Proxy address              ", dxProxy.address)
         logger.info('No MNEMONIC/PK present, you need to manually perform these transactions:')
