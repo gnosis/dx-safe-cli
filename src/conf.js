@@ -184,6 +184,24 @@ async function validateGasPrice(conf){
     assert(conf.gasPrice <= 1e11, "gasPrice higher than 100 Gwei, that's very expensive, was on purpose?")
 }
 
+async function validateSignOffline(conf){
+    assert(conf.ownersToSign, "when no PK/MNEMONIC is provied, you need to explicitly setup ownersToSign.")
+    // Obtain factories addresses
+    const contracts = await getContracts(conf)
+    const safeInstance = await contracts.GnosisSafe.at(conf.safe)
+    const safeOwners = await safeInstance.getOwners()
+    const threshold = await safeInstance.getThreshold()
+
+    // Verify owners to sign are enough for the treshold
+    assert(conf.ownersToSign.length >= threshold, `Not enough safe owners provided for signing in ownersToSign, minimum ${threshold}, provided: ${conf.ownersToSign.length}`)
+
+    // Verify owners to sign are actual safe owners
+    for(var i=0; i<conf.ownersToSign; i++){
+        assert(safeOwners.includes(conf.ownersToSign[i], `onwerToSign ${conf.ownersToSign[i]} is not an actual safe owner`))
+    }
+
+}
+
 module.exports = {
     loadConf,
     validateCreation,
@@ -193,5 +211,6 @@ module.exports = {
     validateUpdateDx,
     validateUpdateOwners,
     validateDisableModule,
-    validateStatus
+    validateStatus,
+    validateSignOffline
 }
