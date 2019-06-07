@@ -123,6 +123,18 @@ async function validateUpdateDx(conf){
     logger.info("Validation done")
 }
 
+async function validateSafeTransaction(conf){
+    logger.info('Validating configuration file...')
+
+    assert(conf.ethereumURL, "ethereumURL param required")
+
+    await validateGasPrice(conf)
+
+    assert(conf.safe, "safe address is mandatory in the configuration file")
+
+    logger.info("Validation done")
+}
+
 async function validateStatus(conf){
     logger.info('Validating configuration file...')
 
@@ -223,5 +235,6 @@ module.exports = {
     validateDisableModule,
     validateStatus,
     validateSignOffline,
-    validateWithdraw
+    validateWithdraw,
+    validateSafeTransaction
 }

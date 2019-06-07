@@ -11,5 +11,8 @@
     ""
   ],
   "safeThreshold": 3,
-  "gasPrice": 10000000000
+  "gasPrice": 10000000000,
+  "ownersToSign": [
+    ""
+  ]
 }

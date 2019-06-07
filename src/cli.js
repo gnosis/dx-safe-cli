@@ -24,6 +24,7 @@ require('./cliCommands/disableModuleCmd')(commandParams)
 require('./cliCommands/enableModuleCmd')(commandParams)
 require('./cliCommands/statusCmd')(commandParams)
 require('./cliCommands/withdrawCmd')(commandParams)
+require('./cliCommands/safeTransactionCmd')(commandParams)
 
 const width = Math.min(100, yargs.terminalWidth())
 
