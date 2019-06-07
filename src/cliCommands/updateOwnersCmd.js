@@ -165,7 +165,7 @@ function registerCommand ({ cli }) {
         logger.info(`Safe transaction succesfully executed at tx ${safeTx.tx}`)
       }
       else{
-        validateSignOffline(jsonConf)
+        await validateSignOffline(jsonConf)
         const ownersToSign = jsonConf.ownersToSign.sort()
         
         const safeThreshold = await safeInstance.getThreshold()

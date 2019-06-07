@@ -53,7 +53,6 @@ function registerCommand ({ cli }) {
     const networkID = await util.promisify(web3.version.getNetwork)()
     const accounts = await util.promisify(web3.eth.getAccounts)()
 
-    const moduleInstance = await contracts.DutchXCompleteModule.at(jsonConf.dxModule)
     const safeInstance = await contracts.GnosisSafe.at(jsonConf.safe)
     const dxProxy = await contracts.DutchExchangeProxy.deployed()
     const dxInstance = await contracts.DutchExchange.at(dxProxy.address)
@@ -71,7 +70,6 @@ function registerCommand ({ cli }) {
     const tokenSymbol = await tokenInstance.symbol()
     const safeBalanceWei = await tokenInstance.balanceOf(safeInstance.address)
     const safeBalance = safeBalanceWei.div("1e"+tokenDecimals)
-
     if(tokensInDX.gt(0)){
       let multisigData
       if(tokensInDX.lt(tokenAmountWei)){
@@ -177,7 +175,7 @@ function registerCommand ({ cli }) {
         logger.info(`Safe transaction succesfully executed at tx ${safeTx.tx}`)
       }
       else{
-        validateSignOffline(jsonConf)
+        await validateSignOffline(jsonConf)
         const ownersToSign = jsonConf.ownersToSign.sort()
         
         const safeThreshold = await safeInstance.getThreshold()

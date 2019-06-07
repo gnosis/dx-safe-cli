@@ -125,7 +125,7 @@ function registerCommand ({ cli }) {
       }
       else{
 
-        validateSignOffline(jsonConf)
+        await validateSignOffline(jsonConf)
         const ownersToSign = jsonConf.ownersToSign.sort()
         const safeThreshold = await safeInstance.getThreshold()
         logger.info("DX Proxy address              ", dxProxy.address)
