@@ -134,6 +134,16 @@ async function validateStatus(conf){
     logger.info("Validation done")
 }
 
+async function validateWithdraw(conf){
+    logger.info('Validating configuration file...')
+
+    assert(conf.ethereumURL, "ethereumURL param required")
+
+    assert(conf.safe, "safe address is mandatory in the configuration file")
+
+    logger.info("Validation done")
+}
+
 async function validateTokens(conf){
     assert(Array.isArray(conf.whitelistedTokens), "whitelistedTokens must be an array")
 
@@ -185,7 +195,7 @@ async function validateGasPrice(conf){
 }
 
 async function validateSignOffline(conf){
-    assert(conf.ownersToSign, "when no PK/MNEMONIC is provied, you need to explicitly setup ownersToSign.")
+    assert(Array.isArray(conf.ownersToSign), "when no PK/MNEMONIC is provied, you need to explicitly setup ownersToSign.")
     // Obtain factories addresses
     const contracts = await getContracts(conf)
     const safeInstance = await contracts.GnosisSafe.at(conf.safe)
@@ -212,5 +222,6 @@ module.exports = {
     validateUpdateOwners,
     validateDisableModule,
     validateStatus,
-    validateSignOffline
+    validateSignOffline,
+    validateWithdraw
 }
