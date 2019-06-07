@@ -1,5 +1,5 @@
 const logger = require('debug-logger')('cli:createCmd')
-const { loadConf, validateDisableModule } = require('../conf')
+const { loadConf, validateDisableModule, validateSignOffline } = require('../conf')
 const { getContracts } = require('../contracts')
 const inquirer = require('inquirer')
 const getWeb3 = require('../getWeb3')
@@ -124,19 +124,21 @@ function registerCommand ({ cli }) {
         logger.info(`Safe transaction succesfully executed at tx ${safeTx.tx}`)
       }
       else{
+
+        await validateSignOffline(jsonConf)
+        const ownersToSign = jsonConf.ownersToSign.sort()
         const safeThreshold = await safeInstance.getThreshold()
-        const safeOwners = (await safeInstance.getOwners()).sort()
         logger.info("DX Proxy address              ", dxProxy.address)
         logger.info('No MNEMONIC/PK present, you need to manually perform these transactions:')
-        logger.info(`Send this transaction with ${safeThreshold} owner/s:`)
+        logger.info(`Send this transaction with the ${safeThreshold} owner/s [${ownersToSign}] :`)
         const approveHash = await safeInstance.approveHash.request(safeTransaction.multisigHash, {gas: 1e6}).params[0]
         console.log(JSON.stringify(approveHash, null, 2))
         let sigs = '0x'
         for(var j=0; j<safeThreshold; j++){
-          sigs += "000000000000000000000000" + safeOwners[j].replace('0x', '') + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
+          sigs += "000000000000000000000000" + ownersToSign[j].replace('0x', '') + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
         }
         const safeTx = await safeInstance.execTransaction.request(safeInstance.address, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1e6}).params[0]
-        logger.info(`Finally exec the multisig with 1 of the owners:`)
+        logger.info(`Finally exec the multisig with 1 account:`)
         console.log(JSON.stringify(safeTx, null, 2))
       }
     }    

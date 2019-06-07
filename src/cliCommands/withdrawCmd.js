@@ -1,5 +1,5 @@
 const logger = require('debug-logger')('cli:withdrawCmd')
-const { loadConf, validateWithdraw } = require('../conf')
+const { loadConf, validateWithdraw, validateSignOffline } = require('../conf')
 const { getContracts } = require('../contracts')
 const getWeb3 = require('../getWeb3')
 const { isAddress } = require('web3-utils')
@@ -53,7 +53,6 @@ function registerCommand ({ cli }) {
     const networkID = await util.promisify(web3.version.getNetwork)()
     const accounts = await util.promisify(web3.eth.getAccounts)()
 
-    const moduleInstance = await contracts.DutchXCompleteModule.at(jsonConf.dxModule)
     const safeInstance = await contracts.GnosisSafe.at(jsonConf.safe)
     const dxProxy = await contracts.DutchExchangeProxy.deployed()
     const dxInstance = await contracts.DutchExchange.at(dxProxy.address)
@@ -71,7 +70,6 @@ function registerCommand ({ cli }) {
     const tokenSymbol = await tokenInstance.symbol()
     const safeBalanceWei = await tokenInstance.balanceOf(safeInstance.address)
     const safeBalance = safeBalanceWei.div("1e"+tokenDecimals)
-
     if(tokensInDX.gt(0)){
       let multisigData
       if(tokensInDX.lt(tokenAmountWei)){
@@ -177,21 +175,24 @@ function registerCommand ({ cli }) {
         logger.info(`Safe transaction succesfully executed at tx ${safeTx.tx}`)
       }
       else{
+        await validateSignOffline(jsonConf)
+        const ownersToSign = jsonConf.ownersToSign.sort()
+        
         const safeThreshold = await safeInstance.getThreshold()
-        const safeOwners = (await safeInstance.getOwners()).sort()
+
         logger.info("Token to withdraw:            ", token)
         logger.info("Token name:                   ", tokenName + " ("+tokenSymbol + ")")
         logger.info("Amount:                       ", tokenAmountWei.toFixed())
         logger.info('No MNEMONIC/PK present, you need to manually perform these transactions:')
-        logger.info(`Send this transaction with ${safeThreshold} owner/s:`)
+        logger.info(`Send this transaction with the ${safeThreshold} owner/s [${ownersToSign}] :`)
         const approveHash = await safeInstance.approveHash.request(safeTransaction.multisigHash, {gas: 1000000}).params[0]
         console.log(JSON.stringify(approveHash, null, 2))
         let sigs = '0x'
         for(var j=0; j<safeThreshold; j++){
-          sigs += "000000000000000000000000" + safeOwners[j].replace('0x', '') + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
+          sigs += "000000000000000000000000" + ownersToSign[j].replace('0x', '') + "0000000000000000000000000000000000000000000000000000000000000000" + "01"
         }
         const safeTx = await safeInstance.execTransaction.request(safeTransaction.to, 0, safeTransaction.data, 0, 0, 0, 0, 0, 0, sigs, {gas: 1e6}).params[0]
-        logger.info(`Finally exec the multisig with 1 of the owners:`)
+        logger.info(`Finally exec the multisig with 1 account:`)
         console.log(JSON.stringify(safeTx, null, 2))
       }
     }    
