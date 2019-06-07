@@ -31,6 +31,7 @@ Safe params:
 | `moduleType` |  Enum: [`seller` \| `complete`]  |  Type of DutchX module used for the operator. There\'s currently two options: `seller` can only sell, `complete` can sell and buy |
 | `whitelistedTokens`| Array of Strings (ethereum addresses)  |  ERC20 tokens that are whitelisted. Only whitelisted tokens can be traded.  |
 | `operators`| Array of Strings (ethereum addresses)  |  Addresses for the operators. The operators are users that can trade the whitelisted tokens in the DutchX on behalf of the safe address. Note that operators cannot execute any other transaction using the safe funds. Also, the operators don\'t need to surplus the `safeThreshold` |
+| `ownersToSign` | Array of Strings (ethereum addresses) | Addresses of the safe owners. This are the owners included in the data to send when performing transactions without PK/MNEMONIC but with Hardware wallet, external accounts, etc. |
 
 ## Running the CLI
 ```sh
