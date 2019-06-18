@@ -7,7 +7,7 @@ const util = require('util');
 const { createAndAddModulesData } = require('@gnosis.pm/safe-contracts/test/utils')
 const assert = require('assert')
 
-function registerCommand ({ cli }) {
+function registerCommand({ cli }) {
   cli.command('create [--conf file]', 'Deploy a new dx-module based on the configuration file parameters. Resulting addresses are saved on the same file.', yargs => {
     yargs.option('conf', {
       type: 'string',
@@ -64,30 +64,30 @@ function registerCommand ({ cli }) {
         message: `Create a new Safe and ${jsonConf.moduleType} module based on these parameters?`
       }
     )
-    if(!confirmation){
+    if (!confirmation) {
       logger.info("Exit.")
-      process.exit(0)   
+      process.exit(0)
     }
-    
+
     logger.info("Deploying contracts...")
     const moduleData = await CompleteModule.contract.setup.request(dxProxy.address, jsonConf.whitelistedTokens, jsonConf.operators, 0).params[0].data // dx, whitelistedToken, operators
 
     let moduleMastercopyAddress
 
-    if(jsonConf.moduleType == "seller"){
+    if (jsonConf.moduleType == "seller") {
       moduleMastercopyAddress = SellerModule.address
     }
-    else{
+    else {
       moduleMastercopyAddress = CompleteModule.address
     }
 
     const proxyFactoryData = await proxyFactory.contract.createProxy.request(moduleMastercopyAddress, moduleData).params[0].data
     const modulesCreationData = createAndAddModulesData([proxyFactoryData])
     const addModulesData = createAndAddModules.contract.createAndAddModules.request(proxyFactory.address, modulesCreationData).params[0].data
-    
+
     let gnosisSafeData = await safeMastercopy.contract.setup.request(jsonConf.owners, jsonConf.safeThreshold, createAndAddModules.address, addModulesData).params[0].data
 
-    const safeTx = await proxyFactory.createProxy(safeMastercopy.address, gnosisSafeData, {from: accounts[0], gasPrice: jsonConf.gasPrice, gas: 1e6})
+    const safeTx = await proxyFactory.createProxy(safeMastercopy.address, gnosisSafeData, { from: accounts[0], gasPrice: jsonConf.gasPrice, gas: jsonConf.gas || 1e6 })
 
     assert(safeTx.receipt.status == "0x1", safeTx)
     logger.info(`Safe and Module succesfully created at tx ${safeTx.tx}`)
