@@ -243,7 +243,7 @@ async function validateSignOffline(conf) {
   // Verify owners to sign are actual safe owners
   const ownersToSign = conf.ownersToSign.map(owner => owner.toLowerCase())
   ownersToSign.forEach(ownerToSign => {
-    const signerIsOwner = safeOwners.some(owner => ownerToSign === owner.toLowerCase())
+    const signerIsOwner = safeOwners.some(owner => ownerToSign === owner)
     assert(signerIsOwner, `onwerToSign ${ownerToSign} is not an actual safe owner. Owners: ${safeOwners.join(', ')}`)
   })
 }
