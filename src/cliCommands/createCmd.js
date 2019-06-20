@@ -51,8 +51,16 @@ function registerCommand({ cli }) {
     for (var i = 0; i < jsonConf.whitelistedTokens.length; i++) {
       tokenAddress = jsonConf.whitelistedTokens[i]
       tokenInstance = await contracts.HumanFriendlyToken.at(tokenAddress)
-      tokenSymbol = await tokenInstance.symbol()
-      logger.info("Whitelisted token %d - %s     ", i, tokenSymbol, tokenAddress)
+      try {
+        tokenSymbol = await tokenInstance.symbol()
+        logger.info("Whitelisted token %d - %s     ", i, tokenSymbol, tokenAddress)
+      } catch (error) {
+        logger.error('Error getting the symbol for token %d - %s', i, tokenAddress)
+        console.error('  > Please make sure the address is corect', error)
+
+        logger.error('Double check the address %s\n', tokenAddress)
+      }
+
     }
 
     logger.info("----------------------------------------------------------------------------------")
