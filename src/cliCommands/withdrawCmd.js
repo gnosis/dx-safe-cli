@@ -67,8 +67,9 @@ function registerCommand({ cli }) {
     const tokenDecimals = (await tokenInstance.decimals()).toNumber()
     const numWithOffsetForDecimals = Math.floor(parseFloat(amount) * 1000)
     const tokenAmountWei = web3.toBigNumber(numWithOffsetForDecimals).mul("1e" + tokenDecimals).div(1000)
-    const tokenName = await tokenInstance.name()
-    const tokenSymbol = await tokenInstance.symbol()
+    const tokenName = await tokenInstance.name().catch(logErrorReturnNA)
+    const tokenSymbol = await tokenInstance.symbol().catch(logErrorReturnNA)
+
     const safeBalanceWei = await tokenInstance.balanceOf(safeInstance.address)
     const safeBalance = safeBalanceWei.div("1e" + tokenDecimals)
     if (tokensInDX.gt(0)) {
@@ -202,6 +203,12 @@ function registerCommand({ cli }) {
 
 
   })
+}
+
+function logErrorReturnNA(error) {
+  console.error('Error loading Symbol/Name. Please make sure the address is correct', error)
+
+  return 'N/A'
 }
 
 module.exports = registerCommand
