@@ -104,11 +104,14 @@ function registerCommand({ cli }) {
 
     const totalTokensHold = tokensInDX.add(safeBalanceWei)
     const remainingTokensAfterTransfer = totalTokensHold.sub(tokenAmountWei)
-    console.log(`Balances:
-    - Safe: ${formatTokens(safeBalanceWei, tokenDecimals, tokenSymbol)}    (${safeBalanceWei.toString(10)})
-    - DutchX: ${formatTokens(tokensInDX, tokenDecimals, tokenSymbol)}     (${tokensInDX.toString(10)})
-    - Remaining after transfer: ${formatTokens(remainingTokensAfterTransfer, tokenDecimals, tokenSymbol)}     (${remainingTokensAfterTransfer.toString(10)})
-    - TOTAL: ${formatTokens(totalTokensHold, tokenDecimals, tokenSymbol)}     (${totalTokensHold.toString(10)})
+    console.log(`
+Balances:
+    - Safe: ${formatTokens(safeBalanceWei, tokenDecimals, tokenSymbol)}\t\t(${safeBalanceWei.toString(10)})
+    - DutchX: ${formatTokens(tokensInDX, tokenDecimals, tokenSymbol)}\t\t(${tokensInDX.toString(10)})
+    - Total funds: ${formatTokens(totalTokensHold, tokenDecimals, tokenSymbol)}\t(${totalTokensHold.toString(10)})
+
+Transferring ${amount} ${tokenSymbol} to ${to}: 
+    - Remaining after transfer: ${formatTokens(remainingTokensAfterTransfer, tokenDecimals, tokenSymbol)}\t\t(${remainingTokensAfterTransfer.toString(10)})
     `)
 
     assert(totalTokensHold.gte(tokenAmountWei), 
