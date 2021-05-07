@@ -33,6 +33,25 @@
     "@gnosis.pm/gno-token" "^2.0.0"
     "@gnosis.pm/util-contracts" "^2.0.0"
 
+"@gnosis.pm/safe-contracts@0.1.0", "@gnosis.pm/safe-contracts@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-contracts/-/safe-contracts-0.1.0.tgz#47baf0bdb65e7c73732998301c9136f62d43d954"
+  integrity sha512-4zYz0YVdTqLIxnUUSSTO7dggdSllZsVmdYJJqFSMHAmRUm9ldgQP72ASEvLoJ8D+7jAy+TAPLqNL0rfvmUyPzw==
+  dependencies:
+    openzeppelin-solidity "^2.0.0"
+    solc "^0.5.0"
+    truffle-hdwallet-provider "0.0.7-beta.1"
+
+"@gnosis.pm/safe-modules@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-modules/-/safe-modules-0.1.0.tgz#9663582f39e4595d541b1bd556467ba167877d56"
+  integrity sha512-yyOOvOxOsEXIaMRgeFftErabQciUH1Z+D2lkF4GLU9XHgDEM0L8Yf6XQ5+H3jgvY7LyANZQOCxCpzVf6rmlevQ==
+  dependencies:
+    "@gnosis.pm/safe-contracts" "^0.1.0"
+    "@gnosis.pm/util-contracts" "^2.0.0"
+    dotenv "^6.2.0"
+    openzeppelin-solidity "^2.0.0"
+
 "@gnosis.pm/util-contracts@2.0.0", "@gnosis.pm/util-contracts@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@gnosis.pm/util-contracts/-/util-contracts-2.0.0.tgz#562b14a2d6cb4a59189476dd0f6aaeba5f65abe2"
@@ -815,7 +834,7 @@ bn.js@4.11.6:
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
   integrity sha1-UzRK2xRhehP26N0s4okF0cC6MhU=
 
-bn.js@4.11.8, bn.js@=4.11.8, bn.js@^4.10.0, bn.js@^4.11.0, bn.js@^4.11.1, bn.js@^4.11.3, bn.js@^4.11.6, bn.js@^4.4.0, bn.js@^4.8.0:
+bn.js@4.11.8, bn.js@=4.11.8, bn.js@^4.10.0, bn.js@^4.11.0, bn.js@^4.11.1, bn.js@^4.11.3, bn.js@^4.11.6, bn.js@^4.11.8, bn.js@^4.4.0, bn.js@^4.8.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
@@ -1503,6 +1522,14 @@ ethereum-common@^0.0.18:
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
   integrity sha1-L9w1dvIykDNYl26znaeDIT/5Uj8=
 
+ethereumjs-abi@^0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/ethereumjs-abi/-/ethereumjs-abi-0.6.7.tgz#d1d1c5cdb8d910a7d97645ba9e93be5d153bba2e"
+  integrity sha512-EMLOA8ICO5yAaXDhjVEfYjsJIXYutY8ufTE93eEKwsVtp2usQreKwsDTJ9zvam3omYqNuffr8IONIqb2uUslGQ==
+  dependencies:
+    bn.js "^4.11.8"
+    ethereumjs-util "^6.0.0"
+
 "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
   version "0.6.6"
   resolved "git+https://github.com/ethereumjs/ethereumjs-abi.git#d84a96796079c8595a0c78accd1e7709f2277215"
@@ -1896,31 +1923,6 @@ globals@^9.18.0:
   version "9.18.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-9.18.0.tgz#aa3896b3e69b487f17e31ed2143d69a8e30c2d8a"
   integrity sha512-S0nG3CLEQiY/ILxqtztTWH/3iRRdyBLw6KMDxnKMchrtbj2OFmehVh0WUCfW3DUrIgx/qFrJPICrq4Z4sTR9UQ==
-
-"gnosis-safe-modules@github:gnosis/safe-modules#feature/dx-module-refactor":
-  version "0.0.1"
-  resolved "https://codeload.github.com/gnosis/safe-modules/tar.gz/5b8ef6875cadf3576ebd3cb391975c561d2f83a7"
-  dependencies:
-    "@gnosis.pm/util-contracts" "^2.0.0"
-    dotenv "^6.2.0"
-    gnosis-safe "github:gnosis/safe-contracts#v0.1.0"
-    solc "0.5.0"
-
-"gnosis-safe@github:gnosis/safe-contracts#temporal/v0.1.0-build":
-  version "0.1.0"
-  resolved "https://codeload.github.com/gnosis/safe-contracts/tar.gz/8d9afdb3e6d5ec43229163bf2011bd9f236d5fe1"
-  dependencies:
-    openzeppelin-solidity "^2.0.0"
-    solc "^0.5.0"
-    truffle-hdwallet-provider "0.0.7-beta.1"
-
-"gnosis-safe@github:gnosis/safe-contracts#v0.1.0":
-  version "0.1.0"
-  resolved "https://codeload.github.com/gnosis/safe-contracts/tar.gz/427d6f7e779431333c54bcb4d4cde31e4d57ce96"
-  dependencies:
-    openzeppelin-solidity "^2.0.0"
-    solc "^0.5.0"
-    truffle-hdwallet-provider "0.0.7-beta.1"
 
 graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.15"
@@ -3361,18 +3363,6 @@ solc@0.4.25:
     require-from-string "^1.1.0"
     semver "^5.3.0"
     yargs "^4.7.1"
-
-solc@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/solc/-/solc-0.5.0.tgz#2deb2ae992acac3afb909f85c38d00f01dcb335e"
-  integrity sha512-mdLHDl9WeYrN+FIKcMc9PlPfnA9DG9ur5QpCDKcv6VC4RINAsTF4EMuXMZMKoQTvZhtLyJIVH/BZ+KU830Z8Xg==
-  dependencies:
-    fs-extra "^0.30.0"
-    keccak "^1.0.2"
-    memorystream "^0.3.1"
-    require-from-string "^2.0.0"
-    semver "^5.5.0"
-    yargs "^11.0.0"
 
 solc@^0.5.0:
   version "0.5.5"

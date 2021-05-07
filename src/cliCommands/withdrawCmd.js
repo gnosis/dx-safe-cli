@@ -9,6 +9,15 @@ const lightwallet = require('eth-lightwallet')
 const createVault = util.promisify(lightwallet.keystore.createVault).bind(lightwallet.keystore)
 const safeUtils = require('@gnosis.pm/safe-contracts/test/utils')
 const inquirer = require('inquirer')
+const BigNumber = require('bignumber.js')
+
+function formatTokens(amount, decimals, symbol){
+  return amount.div("1e" + decimals).toFixed() + " " + symbol
+}
+
+function toWei(amount, decimals) {
+  return (new BigNumber(amount)).times(new BigNumber('10').toPower(decimals))
+}
 
 function registerCommand({ cli }) {
   cli.command('withdraw [--token address] [--to address] [--amount integer] [--conf file]', 'Transfers tokens from the DX and safe-contract to the destination address', yargs => {
@@ -65,10 +74,19 @@ function registerCommand({ cli }) {
     logger.info(`Get balance of ${token} for safe ${safeInstance.address}`)
     const tokensInDX = await dxInstance.balances(token, safeInstance.address)
     const tokenDecimals = (await tokenInstance.decimals()).toNumber()
-    const numWithOffsetForDecimals = Math.floor(parseFloat(amount) * 1000)
-    const tokenAmountWei = web3.toBigNumber(numWithOffsetForDecimals).mul("1e" + tokenDecimals).div(1000)
-    const tokenName = await tokenInstance.name()
-    const tokenSymbol = await tokenInstance.symbol()
+    const tokenAmountWei = toWei(amount, tokenDecimals)
+
+    let tokenSymbol, tokenName
+    try {
+      tokenName = await tokenInstance.name()
+      tokenSymbol = await tokenInstance.symbol()
+    } catch (error) {
+      logger.error('Error getting the name or symbol for token %d', token)
+      console.error('  > Please make sure the address is corect', error)
+
+      logger.error('Double check the address %s\n', token)
+    }
+
     const safeBalanceWei = await tokenInstance.balanceOf(safeInstance.address)
     const safeBalance = safeBalanceWei.div("1e" + tokenDecimals)
     if (tokensInDX.gt(0)) {
@@ -85,7 +103,17 @@ function registerCommand({ cli }) {
     }
 
     const totalTokensHold = tokensInDX.add(safeBalanceWei)
-    assert(totalTokensHold.gte(tokenAmountWei), "Not enough tokens in DX and safe contract: " + totalTokensHold.div("1e" + tokenDecimals).toFixed() + " " + tokenSymbol)
+    const remainingTokensAfterTransfer = totalTokensHold.sub(tokenAmountWei)
+    console.log(`Balances:
+    - Safe: ${formatTokens(safeBalanceWei, tokenDecimals, tokenSymbol)}    (${safeBalanceWei.toString(10)})
+    - DutchX: ${formatTokens(tokensInDX, tokenDecimals, tokenSymbol)}     (${tokensInDX.toString(10)})
+    - Remaining after transfer: ${formatTokens(remainingTokensAfterTransfer, tokenDecimals, tokenSymbol)}     (${remainingTokensAfterTransfer.toString(10)})
+    - TOTAL: ${formatTokens(totalTokensHold, tokenDecimals, tokenSymbol)}     (${totalTokensHold.toString(10)})
+    `)
+
+    assert(totalTokensHold.gte(tokenAmountWei), 
+      `Not enough tokens in DX and safe contract. Maximum withdrawable amount ${formatTokens(totalTokensHold, tokenDecimals, tokenSymbol)}`
+    )
 
     // Transfer tokens from the safe contract to the "to" address
     const multisigData2 = tokenInstance.transfer.request(to, tokenAmountWei).params[0].data
